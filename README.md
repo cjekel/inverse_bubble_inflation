@@ -10,8 +10,8 @@ WIP: Identify material paramters from DIC bubble inflation tests...
 - [ ] Determine the location where the pressure stops increasing
 
 # TODO FE Models
-- [ ] Identify appropriate abaqus material models
-- [ ] Plot material model response for uniaixal cases on 1 shell element
+- [x] Identify appropriate abaqus material models (Appropriate models include hyperelastic fung orthotropic)
+- [x] Plot material model response for uniaixal cases on 1 shell element
 - [ ] Determine reasonable shell/membrane formulation
 - [ ] Create bubble FE model
 - [ ] Export of displacement field data at specified locations
