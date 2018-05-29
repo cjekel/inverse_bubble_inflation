@@ -57,12 +57,11 @@ cons: can only save memory space if dtype='float32',
 
 pros: data is still accurate to 5 decimal places;
       file size of 'testResult2.npy', half that of 'testResult1.npy';
-      additional runtime  option 1 ;
+      additional runtime negligible compared to option 1;
       maybe temp folder / temp files could be utilized? 
       
 see documentation:
     https://docs.scipy.org/doc/numpy/reference/generated/numpy.memmap.html
-
 """
 
 
