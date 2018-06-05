@@ -2,16 +2,21 @@
 WIP: Identify material paramters from DIC bubble inflation tests...
 
 # TODO DIC Test Data
-- [ ] Store text data as binary numpy arrays
-- [ ] Create function that converts tec/text test data to binary numpy array
-- [ ] Identify the specimen from test data 
-- [ ] Determine origin location for all tests
+- [x] Investigate different ways to store and compress numpy arrays
+- [ ] Create command line function that converts and stores DIC tec data into compressed arrays
+- [x] Identify the specimen from test data 
+- [ ] Determine origin location for all tests (compare different methods for fidning the origin)
+- [ ] Open pressure data and find the the location where the pressure starts increassing
+- [ ] Determine the location where the pressure stops increasing
+- [ ] Create folders of the appropriate pressure data and corresponding npz of the displacement data
 
 # TODO FE Models
-- [ ] Identify appropriate abaqus material models
-- [ ] Determine shell/membrane formulation
+- [x] Identify appropriate abaqus material models (Appropriate models include hyperelastic fung orthotropic)
+- [x] Plot material model response for uniaixal cases on 1 shell element
+- [ ] Determine reasonable shell/membrane formulation
+- [ ] Create bubble FE model
 - [ ] Export of displacement field data at specified locations
-
+- [ ] Specify the time increments to use to match the pressure data
 
 # TODO Tie Everything together
-- [ ] Complete invesre method? 
+- [ ] Complete invesre method 
