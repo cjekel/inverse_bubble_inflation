@@ -74,7 +74,7 @@
 ###           as-an-internal-or-external-command/
 ###   (you will need to know the location of your python interpreter, 
 ###    a.k.a. the folder where "python.exe" file is located; common locations
-###    are C:\\Python27, C:\\Python36, C:\\Users\\[name]\\Anaconda3, etc.)
+###    are C:\Python27, C:\Python36, C:\Users\[name]\Anaconda3, etc.)
 ###
 ### Linux: 
 ###   https://stackoverflow.com/questions/18247333/python-pythonpath-in-linux
@@ -107,7 +107,7 @@
 ##
 ## -> change command directory by typing the command "cd " (with a space),
 ##    then paste the filepath of this script's containing folder 
-##    (using the keyboard shortcut "ctrl+v"), e.g., "cd C:\\temp" 
+##    (using the keyboard shortcut "ctrl+v"), e.g., "cd C:\temp" 
 ##
 ## -> press "enter" (you should see the directory change on the command line)
 ## 
