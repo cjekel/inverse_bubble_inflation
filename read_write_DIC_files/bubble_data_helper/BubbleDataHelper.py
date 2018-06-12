@@ -27,7 +27,7 @@
 ## """ Bubble Test Data Helper """ :
 ##         File compression;
 ##             zero-Z-displacement data removal to isolate specimen;
-##                 optional plot grid @ apparatus surface 
+##                 optional plot output & grid @ apparatus surface 
 ##                 (work in progress--to be completed)
 ##=============================================================================
 # =============================================================================
