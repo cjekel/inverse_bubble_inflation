@@ -26,10 +26,10 @@
 ##=============================================================================
 ## """ Bubble Test Data Helper """ :
 ##         File compression;
-##             data filtration to isolate specimen;
-##                 optional grid @ apparatus surface
+##             zero-Z-displacement data removal to isolate specimen;
+##                 optional plot grid @ apparatus surface 
+##                 (work in progress--to be completed)
 ##=============================================================================
-
 # =============================================================================
 #    This function has 1 required argument and 3 optional arguments.
 
@@ -39,9 +39,9 @@
 #        folder under the same directory as this script's current directory.
 
 #    Optional argument 1, "bool_removeZeroZdisp":
-#        boolean to turn on/off "initial Z != 0" filter.
+#        boolean to turn on/off "dispZ != 0" data removal tool.
 #        Setting this to "Y" will remove all data points that have an 
-#        displaced Z value of 0; this removes data points with 0 displacement,
+#        displaced Z value of 0mm; this removes data with 0 displacement,
 #        i.e., data points that are not relevent to the specimen.
 #        Setting this to "N" keeps data unaffected. 
 
@@ -55,7 +55,7 @@
 #        replacing the data points where initial Z = 0. (dispZ??)
 #        Default is "false".
 #        If optional argument 2 "output3Dplot" is "false",
-#        OR if optional argument 1 "bool_removeZ" is "N",
+#        OR if optional argument 1 "bool_removeZeroZdisp" is "N",
 #        then this option is also "false" by default.
 # =============================================================================
 
@@ -216,7 +216,7 @@ if len(datFileList) > 0:
         
         # prompt user input for yes/no decision on 
         # whether or not points with 0mm Z-displacement should be removed
-        bool_removeZ = is_bool_input_valid( \
+        bool_removeZeroZdisp = is_bool_input_valid( \
         '\nDo you want to remove data where Z=0mm or dispZ=0mm? [Y/N]: ')
 
         # print out the location of the new folder where compressed data
@@ -240,7 +240,7 @@ if len(datFileList) > 0:
         
             # if user selects "y", remove 0mm Z-displacment data points;
             # otherwsie, continue
-            if (bool_removeZ == 'Y') | (bool_removeZ == 'y'):
+            if (bool_removeZeroZdisp == 'Y') | (bool_removeZeroZdisp == 'y'):
                 datNumpyArray = datNumpyArray[datNumpyArray[:,5] != 0]
                 # the sixth column contains Z-displacement data;
                 # "datNumpyArray = datNumpyArray[datNumpyArray[:,5] != 0]" 
