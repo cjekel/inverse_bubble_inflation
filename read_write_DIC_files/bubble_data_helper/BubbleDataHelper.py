@@ -31,31 +31,31 @@
 ##                 (work in progress--to be completed)
 ##=============================================================================
 # =============================================================================
-#    This function has 1 required argument and 3 optional arguments.
+#    This function has 2 required arguments and 2 optional arguments.
 
 #    Required argument 1, "dataFolderDirectory": 
 #        filepath of folder containing TecData ".dat" files.
 #        By default, this script will save resulting ".npz" files in a new 
 #        folder under the same directory as this script's current directory.
 
-#    Optional argument 1, "bool_removeZeroZdisp":
+#    Required argument 2, "bool_removeZeroZdisp":
 #        boolean to turn on/off "dispZ != 0" data removal tool.
 #        Setting this to "Y" will remove all data points that have an 
 #        displaced Z value of 0mm; this removes data with 0 displacement,
 #        i.e., data points that are not relevent to the specimen.
 #        Setting this to "N" keeps data unaffected. 
 
-#    Optional argument 2, "output3Dplot": (work in progress--to be completed)
+#    Optional argument 1, "output3Dplot": (work in progress--to be completed)
 #        deliver 3D plots of the displacement field from given TecData. 
 #        Default is "false".
 
-#    Optional argument 3: "plotSurfaceGrid" (work in progress--to be completed)
+#    Optional argument 2: "plotSurfaceGrid" (work in progress--to be completed)
 #        boolean to turn on/off grid representing apparatus surface @ Z=10mm. 
 #        This grid is added to the 3D plots as a visual aid,
 #        replacing the data points where initial Z = 0. (dispZ??)
 #        Default is "false".
-#        If optional argument 2 "output3Dplot" is "false",
-#        OR if optional argument 1 "bool_removeZeroZdisp" is "N",
+#        If optional argument 1 "output3Dplot" is "false",
+#        OR if required argument 2 "bool_removeZeroZdisp" is "N",
 #        then this option is also "false" by default.
 # =============================================================================
 
