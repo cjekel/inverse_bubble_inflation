@@ -46,7 +46,9 @@
 #        Setting this to "N" keeps data unaffected. 
 
 #    Optional argument 1, "output3Dplot": (work in progress--to be completed)
-#        deliver 3D plots of the displacement field from given TecData. 
+#        boolean to deliver 3D plots of the displacement field
+#        from given TecData, which will be saved in ".png" format
+#        in the same location as the compressed ".npz" files.
 #        Default is "false".
 
 #    Optional argument 2: "plotSurfaceGrid" (work in progress--to be completed)
