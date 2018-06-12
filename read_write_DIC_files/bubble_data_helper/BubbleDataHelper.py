@@ -52,7 +52,7 @@
 #    Optional argument 2: "plotSurfaceGrid" (work in progress--to be completed)
 #        boolean to turn on/off grid representing apparatus surface @ Z=10mm. 
 #        This grid is added to the 3D plots as a visual aid,
-#        replacing the data points where initial Z = 0. (dispZ??)
+#        replacing the data points where Z displacement = 0mm.
 #        Default is "false".
 #        If optional argument 1 "output3Dplot" is "false",
 #        OR if required argument 2 "bool_removeZeroZdisp" is "N",
