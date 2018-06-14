@@ -110,7 +110,10 @@
 ##
 ## -> change command directory by typing the command "cd " (with a space),
 ##    then paste the filepath of this script's containing folder 
-##    (using the keyboard shortcut "ctrl+v"), e.g., "cd C:\temp" 
+##    (using the keyboard shortcut "ctrl+v"), e.g., cd C:\temp
+##
+##    --> note: if necessary, use the commands "C:" or "cd /d C:"
+##              to switch disks to the C drive (or any drive of your choosing)
 ##
 ## -> press "enter" (you should see the directory change on the command line)
 ## 
@@ -120,7 +123,7 @@
 ##    
 ##    --> "arg1" is "dataFolderDirectory", a string of the file path of the 
 ##        folder that contains the ".dat" files to be compressed;
-##        e.g.: "C:\temp\Example"
+##        e.g.: C:\temp\Example
 ##
 ##    --> "arg2" is "bool_removeZeroZdisp", a boolean that decides whether 
 ##        or not to remove data points where Z displacement is 0mm;
@@ -153,14 +156,17 @@
 ## -> press "enter"
 ##
 ##
+##    note: if there are spaces within folder names in the necessary paths, 
+##          you may use quotation marks to avoid errors, e.g., instead of 
+##          cd C:\temp\Example with Space\Example, you can use
+##          cd C:\temp\"Example with Space"\Example, or
+##          cd "C:\temp\Example with Space\Example" 
 ##
-##   (note: this function will also work using "True", "T", or "t" for 1
-##          & "False", "F", or "f" for 0) 
+##    note: this function will also work using "True", "T", or "t" for 1
+##          & "False", "F", or "f" for 0)
 ##
-##
-##   note: for the work-in-progress sections, the arguments will be unused
-##         until the coding is completed
-##
+##    note: for the work-in-progress sections, the arguments will be unused
+##          until the coding is completed
 ##=============================================================================
 ###############################################################################
 
@@ -327,14 +333,18 @@ if len(datFileList) > 0:
         
             # if argument "bool_removeZeroZdisp" is True,
             # remove 0mm Z-displacment data points;
-            # otherwsie, continue without affecting data
+            # otherwise, continue without affecting data
             if bool_removeZeroZdisp:
-                datNumpyArray = datNumpyArray[datNumpyArray[:,5] != 0]
-                # the sixth column contains Z-displacement data;
-                # "datNumpyArray = datNumpyArray[datNumpyArray[:,5] != 0]" 
+                datNumpyArray = datNumpyArray[ (datNumpyArray[:,2] != 0) \
+                                              | (datNumpyArray[:,5] != 0)]
+                # the 6th column contains Z-displacement data,
+                # the 3rd column contains initial Z data;
+                # datNumpyArray = datNumpyArray[ (datNumpyArray[:,2] != 0) \
+                #                               | (datNumpyArray[:,5] != 0)]
                 # is read as:
                 # "keep all rows of 'datNumpyArray' where the number in the
-                # 6th column of 'datNumpyArray' is nonzero"
+                # 6th column of 'datNumpyArray' is nonzero
+                # OR where the number in 3rd column is nonzero"
                 
             ## save numbers into a compressed numpy array (headers are removed)
             ## note: "zippedArray" is an arbitrary callback to retrieve data
@@ -356,8 +366,7 @@ if len(datFileList) > 0:
 ## utilizes the "global" method to find files with ".npz" extension
 #
 #unzippedDictionary = {} 
-## initialize empty dictionary; 
-## data will be saved into this variable
+## initialize empty dictionary; data will be saved into this variable
 #
 #for line in datZippedList :
 ## uncomment these 2 lines for further understanding of file manipulation 

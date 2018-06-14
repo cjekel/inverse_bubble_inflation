@@ -27,56 +27,76 @@
 ## """ identifySpecimenDemo.py """ :
 ##        simple dispZ threshold script: isolate important data...
 ##        (this script is an edited version of Charles Jekel's
-##        'readDataPlotDispField.py' file)
-##        run this script in the same folder as file 'B00015.dat'
+##        "readDataPlotDispField.py" file)
+##        run this script in the same folder as file "B00015.dat"
 ##=============================================================================
 
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
 dicFile = 'B00015.dat'
 ## the .dat file is hard-coded for demo purposes...
 
 ##=============================================================================
 ## utilizing np.loadtxt  
-## see 'reduceFileFormatSize.py' file
+## see "reduceFileFormatSizeDemo.py" file
 ##=============================================================================
 values = np.loadtxt(dicFile, skiprows = 3)
 
-##    the counting standard in python starts iterations with 0...
-##    therefore, the 1st column of a 2D array is assigned to [:,0] and
-##    the 2nd column is assigned to [:,2] and so on; 
-##    the use of ":" indicates "all rows" since python follows
-##    the standard [row, column] notation.
- 
-##    dispZ is in the 6th column of "values", a.k.a. "values[:,5]"
+## the counting standard in python starts iterations with 0...
+## therefore, the 1st column of a 2D array is assigned to [:,0] and
+## the 2nd column is assigned to [:,2] and so on; 
+## the use of ":" indicates "all rows" since python follows the standard
+## [row, column] notation.
+
+##    initial X is in the 1st column of "values" a.k.a. "values[:,0]"
+##    initial Y is in the 2nd column of "values" a.k.a. "values[:,1]"
 ##    initial Z is in the 3rd column of "values" a.k.a. "values[:,2]"
+##    dispX is in the 4th column of "values", a.k.a. "values[:,3]"
+##    dispY is in the 5th column of "values", a.k.a. "values[:,4]" 
+##    dispZ is in the 6th column of "values", a.k.a. "values[:,5]"
 
-##    the logical constraint "only keep rows with nonzero dispZ"
-##    is equivalent to "only keep rows with nonzero initial Z"
-##    due to the material thickness of the specimen; check to see:
-##    both lines below result in the same # of remaining data entries
+## the logical constraint "only keep rows with nonzero dispZ"
+## is equivalent to "only keep rows with nonzero dispX", but ONLY for 
+## pressure data GREATER THAN 0 bar; when there is no pressure, then there
+## is no displacement in Z, BUT there is still data from initial Z due to the
+## thickness of the specimen.
 
-values_ZeroDispRemoved = values[values[:,5] != 0]
-#values_ZeroDispRemoved = values[values[:,2] != 0]
-
-##    the line "values_ZeroDispRemoved = values[values[:,N] != 0]" is read as:
+values_ZeroDispRemoved = values[ (values[:,2] != 0) | (values[:,5] != 0) ]
+## the line "values_ZeroDispRemoved = values[values[:,N] != 0]" is read as:
 ##    "values_ZeroDispRemoved" equals all rows of "values"
-##    where the number in the Nth column is not equal to 0
+##    where the number in the Nth column is not equal to 0...
+## therefore, the line
+## "values_ZeroDispRemoved = values[ (values[:,2] != 0) | (values[:,5] != 0) ]"
+## is read as:
+##    "values_ZeroDispRemoved" equals all rows of "values" 
+##    where the number in the 3rd column is nonzero
+##    OR where the number in the 6th column is nonzero 
+## (this acts to conserve specimen data for all pressures)
 
-##    furthermore: the logical constraint "only keep rows with nonzero dispZ"
-##    is also equivalent to "only keep rows with nonzero dispX" 
-##    and also is equivalent to "only keep rows with nonzero dispY"...
-##    although all initial X & initial Y are nonzero,
-##    a displacement in Z will always coincide with a displacement
-##    in both X & Y...
-##    check to see: using either line below to define "values_ZeroDispRemoved"
-##    will also result in the same # of remaining data entries 
-##    (dispX = 4th column = values[:,3] ; dispY = 5th column = [values[:,4])
+## now, for displacement data associated with pressures greater than 0 bar:
+## the logical constraint "only keep rows with nonzero dispZ"
+## is always equivalent to "only keep rows with nonzero initial Z"
+## due to the material thickness of the specimen; digital imaging does not
+## detect thickness for material clamped within the apparatus, as such,
+## both the initial Z value and the dispZ value are 0mm in a 1:1 ratio
+## for all data points, i.e., for all rows in "values"
+
+## furthermore, although all initial X & initial Y are nonzero, 
+## a displacement in Z will always coincide with a displacement in both X & Y,
+## so the statement "only keep rows with nonzero dispZ" is equivalent to
+## "only keep rows with nonzero dispX" and is also equivalent to 
+## "only keep rows with nonzero dispY"
+## check to see:
+##    each line below can be used to define "values_ZeroDispRemoved" and will 
+##    all result in the same # of remaining data entries;
+##    however, for data with pressure 0 bar (generally file "B00001.dat"),
+##    each line below defining "values_ZeroDispRemoved" will generally 
+##    result in all or most of the data removed
 
 #values_ZeroDispRemoved = values[values[:,3] != 0]
 #values_ZeroDispRemoved = values[values[:,4] != 0]
+#values_ZeroDispRemoved = values[values[:,5] != 0]
 
 print ('There are')
 print (len(values)) 
@@ -97,8 +117,8 @@ print ('data entries')
 
 print ('\nThere are')
 print (len(values_ZeroDispRemoved))
-#print ('data entries when zero-displacement points are removed')
-#
+print ('data entries when zero-displacement points are removed')
+
 X = values_ZeroDispRemoved[:,0]
 Y = values_ZeroDispRemoved[:,1]
 Z = values_ZeroDispRemoved[:,2]
@@ -135,14 +155,18 @@ ax.scatter(finalX, finalY, finalZ, zdir='z', s=.05, c='b')
 
 ## axes limits were chosen by rounding the max & min values 
 ## and increasing the range by 5mm for maximums and -5mm for minimums
-
-xMin = np.round( np.min(finalX) ); xMax = np.round( np.max(finalX) ) 
-yMin = np.round( np.min(finalY) ); yMax = np.round( np.max(finalY) ) 
-zMin = np.round( np.min(finalZ) ); zMax = np.round( np.max(finalZ) ) 
-
-ax.set_xlim3d( xMin-5, xMax+5 ) 
-ax.set_ylim3d( yMin-5, yMax+5 )
-ax.set_zlim3d( zMin-5, zMax+5 )
+## (conditions were added to handle situations when 0 data points remain)
+if len(values_ZeroDispRemoved) > 0: 
+    xMin = np.round( np.min(finalX) ); xMax = np.round( np.max(finalX) ) 
+    yMin = np.round( np.min(finalY) ); yMax = np.round( np.max(finalY) ) 
+    zMin = np.round( np.min(finalZ) ); zMax = np.round( np.max(finalZ) ) 
+    ax.set_xlim3d( xMin-5, xMax+5 ) 
+    ax.set_ylim3d( yMin-5, yMax+5 )
+    ax.set_zlim3d( zMin-5, zMax+5 )
+else:
+    ax.set_xlim3d(-100, 100)
+    ax.set_ylim3d(-100,100)
+    ax.set_zlim3d(-8,50)
 
 ax.set_xlabel('X (mm)')
 ax.set_ylabel('Y (mm)')
