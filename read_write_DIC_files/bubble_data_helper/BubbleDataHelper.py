@@ -129,7 +129,7 @@ import glob
 import numpy as np
 
 # print out the user's current version of python
-sys.stdout.write('\nPython %s\n\n\n' % (sys.version))
+sys.stdout.write('\n\nPython %s\n\n\n' % (sys.version))
 
 # print welcome message & instructions; use string "quitBDH" to exit script
 print('Welcome to BubbleDataHelper!\n\n')
@@ -142,11 +142,12 @@ def is_folderPathStr_valid(prompt):
         try:
             folderPath = input(prompt)
             folderPath = folderPath.strip()
+            folderPath = folderPath.lower()
         except ValueError:
             print('Unknown error encountered.\n')
             continue
         
-        if folderPath == 'quitBDH':            
+        if folderPath == 'quitbdh':            
             print('\nExiting BubbleDataHelper...')
             sys.exit()
         
@@ -168,19 +169,17 @@ def is_bool_input_valid(prompt):
         try:
             bool_str_input = input(prompt)
             bool_str_input = bool_str_input.strip()
+            bool_str_input = bool_str_input.lower()
         except ValueError:
             print('Unknown error encountered.\n')
             continue
     
-        if bool_str_input == 'quitBDH':            
+        if bool_str_input == 'quitbdh':            
             print('\nExiting BubbleDataHelper...')
             sys.exit()
             
-        elif (bool_str_input != 'Y') & \
-             (bool_str_input != 'y') & \
-             (bool_str_input != 'N') & \
-             (bool_str_input != 'n'):
-            print('Sorry, please type only "Y" or "N" and try again.')
+        elif (bool_str_input != 'yes') & (bool_str_input != 'no'):
+            print('Sorry, please type only "Yes" or "No" and try again.')
             print('You may type "quitBDH" and press "Enter" to exit.')
             continue
             
@@ -188,6 +187,8 @@ def is_bool_input_valid(prompt):
             break
     
     return bool_str_input
+
+###############################################################################
 
 # prompt user input for the path of the folder containing ".dat" files
 # and check if it is valid
@@ -210,7 +211,7 @@ if len(datFileList) > 0:
 
     # create a path for a new folder in which the compressed data will be saved
     npzFolder = path.join(dir_path, 'CompressedNumpyData_' + \
-                          path.basename( path.split(folderPathStr)[0] ))
+                          path.basename( path.split(folderPathStr)[1] ))
     
     # if the new folder in which compressed data will be saved already exists,
     # cancel the operation & display a message; otherwsie, continue
@@ -219,7 +220,7 @@ if len(datFileList) > 0:
         # prompt user input for yes/no decision on 
         # whether or not points with 0mm Z-displacement should be removed
         bool_removeZeroZdisp = is_bool_input_valid( \
-        '\nDo you want to remove data where Z=0mm or dispZ=0mm? [Y/N]: ')
+        '\nDo you want to remove data where Z=0mm or dispZ=0mm? [Yes/No]: ')
 
         # print out the location of the new folder where compressed data
         # will be saved (same location as this script's path)
@@ -242,7 +243,7 @@ if len(datFileList) > 0:
         
             # if user selects "y", remove 0mm Z-displacment data points;
             # otherwsie, continue
-            if (bool_removeZeroZdisp == 'Y') | (bool_removeZeroZdisp == 'y'):
+            if (bool_removeZeroZdisp == 'yes'):
                 datNumpyArray = datNumpyArray[datNumpyArray[:,5] != 0]
                 # the sixth column contains Z-displacement data;
                 # "datNumpyArray = datNumpyArray[datNumpyArray[:,5] != 0]" 
@@ -261,7 +262,42 @@ if len(datFileList) > 0:
         print('\nThere is already a folder', npzFolder, '\nPlease try again.')    
 
 
+##=============================================================================
+## here is an example on how to retrieve data from the zipped ".npy" files...
+## (zipped numpy file extension = ".npz")
+#             
+#datZippedList = glob.glob( path.join(npzFolder, '*.npz') )
+## creates list of strings of zipped numpy filenames that we plan to retrieve
+## utilizes the "global" method to find files with ".npz" extension
+#
+#unzippedDictionary = {} 
+## initialize empty dictionary; 
+## data will be saved into this variable
+#
+#for line in datZippedList :
+## uncomment these 2 lines for further understanding of file manipulation 
+##    print( path.splitext( path.basename(line) )[0] )   
+##    print( path.join(dir_path, line) )
+#
+#    with np.load(path.join(dir_path, line)) as unzipArray:
+#        test_Zip_retrieved = unzipArray['zippedArray']
+#        ## loads the values into a dictionary-like variable
+#        ## called "unzipArray"; this particular syntax using "with" command
+#        ## makes sure the associated files saved on disk are closed after use 
+# 
+#        unzippedDictionary[ path.splitext( path.basename(line) )[0] ] = \
+#            unzipArray['zippedArray']   
+# 
+##    to retrieve data from B00001.npz, use unzippedDictionary['B00001']
+##    to retrieve data from B00002.npz, use unzippedDictionary['B00002']
+##    etc.
+##    this is so we can use the filenames, B00001 etc., as variable names
+## 
+##=============================================================================
+
+
 ### to do:
-## add option to output plots of data in each ".dat" file
-## add option to place grid @ Z = 10mm and/or output 
-## (not entirely necessary but may be a good visual aid )
+###        
+### add option to output plots of data in each ".dat" file
+### add option to place grid @ Z = 10mm and/or output
+### (not entirely necessary but may be a good visual aid)
