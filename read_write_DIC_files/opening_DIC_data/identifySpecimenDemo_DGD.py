@@ -27,18 +27,16 @@
 ## """ identifySpecimenDemo_DGD.py """ :
 ##        simple dispZ threshold script: isolate important data...
 ##        (this script is an edited version of Charles Jekel's
-##        'readDataPlotDispField.py' file)
+##        "readDataPlotDispField.py" file)
 ##        run this script in the same folder as file "B00015.npz"
 ##=============================================================================
 
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
 
 dicFile = 'B00015.npz'
 
-with np.load(dicFile) as unzipArray:
-    values = unzipArray['zippedArray']
+with np.load(dicFile) as unzipArray: values = unzipArray['zippedArray']
 
 print ('\nThere are')
 print (len(values))
@@ -62,13 +60,20 @@ finalZ = Z+dispZ
 
 ax.scatter(finalX, finalY, finalZ, zdir='z', s=.05, c='b')
 
-xMin = np.round( np.min(finalX) ); xMax = np.round( np.max(finalX) ) 
-yMin = np.round( np.min(finalY) ); yMax = np.round( np.max(finalY) ) 
-zMin = np.round( np.min(finalZ) ); zMax = np.round( np.max(finalZ) ) 
-
-ax.set_xlim3d( xMin-5, xMax+5 ) 
-ax.set_ylim3d( yMin-5, yMax+5 )
-ax.set_zlim3d( zMin-5, zMax+5 )
+## axes limits were chosen by rounding the max & min values 
+## and increasing the range by 5mm for maximums and -5mm for minimums
+## (conditions were added to handle situations when 0 data points remain)
+if len(values) > 0: 
+    xMin = np.round( np.min(finalX) ); xMax = np.round( np.max(finalX) ) 
+    yMin = np.round( np.min(finalY) ); yMax = np.round( np.max(finalY) ) 
+    zMin = np.round( np.min(finalZ) ); zMax = np.round( np.max(finalZ) ) 
+    ax.set_xlim3d( xMin-5, xMax+5 ) 
+    ax.set_ylim3d( yMin-5, yMax+5 )
+    ax.set_zlim3d( zMin-5, zMax+5 )
+else:
+    ax.set_xlim3d(-100, 100)
+    ax.set_ylim3d(-100,100)
+    ax.set_zlim3d(-8,50)
 
 ax.set_xlabel('X (mm)')
 ax.set_ylabel('Y (mm)')
