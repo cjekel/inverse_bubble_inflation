@@ -33,6 +33,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 dicFile = 'B00015.dat'
 ## the .dat file is hard-coded for demo purposes...
@@ -137,7 +138,7 @@ finalX = X+dispX
 finalY = Y+dispY
 finalZ = Z+dispZ
 
-ax.scatter(finalX, finalY, finalZ, zdir='z', s=.05, c='b')
+ax.scatter(finalX, finalY, finalZ, zdir='z', s=.02, c='b')
 ## "  zdir='z'  " orients the data so the Z axis is the chosen vertical axis
 ## "s" = "size"; sets the desired marker size for each data point
 ##               (per documentation, units are "points^2")

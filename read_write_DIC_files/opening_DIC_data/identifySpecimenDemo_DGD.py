@@ -33,6 +33,7 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 dicFile = 'B00015.npz'
 
@@ -58,7 +59,7 @@ finalX = X+dispX
 finalY = Y+dispY
 finalZ = Z+dispZ
 
-ax.scatter(finalX, finalY, finalZ, zdir='z', s=.05, c='b')
+ax.scatter(finalX, finalY, finalZ, zdir='z', s=.02, c='b')
 
 ## axes limits were chosen by rounding the max & min values 
 ## and increasing the range by 5mm for maximums and -5mm for minimums

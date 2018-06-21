@@ -309,7 +309,7 @@ if len(datFileList) > 0:
                           path.basename( path.split(dataFolderDirectory)[1] ))
     
     # if the new folder in which compressed data will be saved already exists,
-    # cancel the operation & display a message; otherwsie, continue
+    # cancel the operation & display a message; otherwise, continue
     if not path.exists(npzFolder):
         
         # print out the location of the new folder where compressed data
