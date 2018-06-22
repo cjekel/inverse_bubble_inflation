@@ -59,7 +59,22 @@ finalX = X+dispX
 finalY = Y+dispY
 finalZ = Z+dispZ
 
-ax.scatter(finalX, finalY, finalZ, zdir='z', s=.05, c='b')
+ax.scatter(finalX, finalY, finalZ, zdir='z',\
+           s=.2, c='b', depthshade=False, edgecolor='')
+## "  zdir='z'  " orients the data so the Z axis is the chosen vertical axis
+## "s" = "size"; sets the desired marker size for each data point
+##               (per documentation, units are "points^2")
+## "c" = "color"; sets the color of the data points
+##                ('b' for "blue"; can be set equal to "finalZ" for gradient)
+## "depthshade=False"; turns off the depthshade effect, which assigns a lower
+##                     alpha value to points "in back" and a higher alpha to 
+##                     points "in front"--turning this off results in 
+##                     significantly shorter runtime, and due to the large #
+##                     of data points, the depthshade effect is not necessary
+## "edgecolor=''"; sets the edgecolor to "None" via the blank string ''--
+##                 default bahavior of matplotlib is to set the edgecolor of 
+##                 markers to the same color as set to the marker, which 
+##                 interfered with the desired size of the markers
 
 ## axes limits were chosen by rounding the max & min values 
 ## and increasing the range by 5mm for maximums and -5mm for minimums
