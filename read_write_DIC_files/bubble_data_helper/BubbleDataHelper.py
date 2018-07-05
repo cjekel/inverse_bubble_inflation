@@ -307,5 +307,5 @@ if len(datFileList) > 0:
 
 ### to do:
 ### add option to output plots of data in each ".dat" file
-### add option to place grid @ Z = 10mm and/or output
+### add option to place grid @ Z = 10mm on output plots
 ### (not entirely necessary but may be a good visual aid)
