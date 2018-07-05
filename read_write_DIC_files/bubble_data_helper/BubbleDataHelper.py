@@ -109,16 +109,25 @@
 ##
 ## -> change command directory by typing the command "cd " (with a space),
 ##    then paste the filepath of this script's containing folder 
-##    (using the keyboard shortcut "ctrl+v"), e.g., "cd C:\temp" 
+##    (using the keyboard shortcut "ctrl+v"), e.g., cd C:\temp
+##
+##    --> note: if necessary, use the commands "C:" or "cd /d C:"
+##              to switch disks to the C drive (or any drive of your choosing)
 ##
 ## -> press "enter" (you should see the directory change on the command line)
 ## 
-## -> type "python BubbleDataHelper.py" and press "enter"
+## -> type "python BubbleDataHelper.py" (without quotation marks)
+##    and press "enter"
 ##
 ## -> follow prompts provided by the function
 ##    (use "ctrl+c" & "ctrl+v" to copy & paste the directory of the data folder
 ##    containing the ".dat" files once prompted)
 ##
+##    note: if there are spaces within folder names in the necessary paths, 
+##          you may use quotation marks to avoid errors, e.g., instead of 
+##          cd C:\temp\Example with Space\Example, you can type
+##          cd C:\temp\"Example with Space"\Example, or
+##          cd "C:\temp\Example with Space\Example" 
 ##=============================================================================
 ###############################################################################
 
@@ -214,13 +223,13 @@ if len(datFileList) > 0:
                           path.basename( path.split(folderPathStr)[1] ))
     
     # if the new folder in which compressed data will be saved already exists,
-    # cancel the operation & display a message; otherwsie, continue
+    # cancel the operation & display a message; otherwise, continue
     if not path.exists(npzFolder):
         
         # prompt user input for yes/no decision on 
         # whether or not points with 0mm Z-displacement should be removed
         bool_removeZeroZdisp = is_bool_input_valid( \
-        '\nDo you want to remove data where Z=0mm or dispZ=0mm? [Yes/No]: ')
+        '\nDo you want to remove data where dispZ=0mm? [Yes/No]: ')
 
         # print out the location of the new folder where compressed data
         # will be saved (same location as this script's path)
@@ -242,14 +251,18 @@ if len(datFileList) > 0:
             ## parameter "skiprows" is used to remove headers in ".dat" files
         
             # if user selects "y", remove 0mm Z-displacment data points;
-            # otherwsie, continue
+            # otherwise, continue
             if (bool_removeZeroZdisp == 'yes'):
-                datNumpyArray = datNumpyArray[datNumpyArray[:,5] != 0]
-                # the sixth column contains Z-displacement data;
-                # "datNumpyArray = datNumpyArray[datNumpyArray[:,5] != 0]" 
+                datNumpyArray = datNumpyArray[ (datNumpyArray[:,2] != 0) \
+                                              | (datNumpyArray[:,5] != 0)]
+                # the 6th column contains Z-displacement data,
+                # the 3rd column contains initial Z data;
+                # datNumpyArray = datNumpyArray[ (datNumpyArray[:,2] != 0) \
+                #                               | (datNumpyArray[:,5] != 0)]
                 # is read as:
                 # "keep all rows of 'datNumpyArray' where the number in the
-                # 6th column of 'datNumpyArray' is nonzero"
+                # 6th column of 'datNumpyArray' is nonzero
+                # OR where the number in 3rd column is nonzero"
                 
             ## save numbers into a compressed numpy array (headers are removed)
             ## note: "zippedArray" is an arbitrary callback to retrieve data
@@ -261,7 +274,6 @@ if len(datFileList) > 0:
         # in which compressed data would have been saved already exists
         print('\nThere is already a folder', npzFolder, '\nPlease try again.')    
 
-
 ##=============================================================================
 ## here is an example on how to retrieve data from the zipped ".npy" files...
 ## (zipped numpy file extension = ".npz")
@@ -271,8 +283,7 @@ if len(datFileList) > 0:
 ## utilizes the "global" method to find files with ".npz" extension
 #
 #unzippedDictionary = {} 
-## initialize empty dictionary; 
-## data will be saved into this variable
+## initialize empty dictionary; data will be saved into this variable
 #
 #for line in datZippedList :
 ## uncomment these 2 lines for further understanding of file manipulation 
@@ -292,12 +303,9 @@ if len(datFileList) > 0:
 ##    to retrieve data from B00002.npz, use unzippedDictionary['B00002']
 ##    etc.
 ##    this is so we can use the filenames, B00001 etc., as variable names
-## 
 ##=============================================================================
 
-
 ### to do:
-###        
 ### add option to output plots of data in each ".dat" file
-### add option to place grid @ Z = 10mm and/or output
+### add option to place grid @ Z = 10mm on output plots
 ### (not entirely necessary but may be a good visual aid)

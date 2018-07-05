@@ -33,12 +33,12 @@
 # =============================================================================
 #    This function has 1 required argument and 3 optional arguments.
 
-#    Required argument 1, "dataFolderDirectory": 
+#    Required argument 1, "dataFolder": 
 #        string of the filepath of folder containing TecData ".dat" files.
 #        By default, this script will save resulting ".npz" files in a new 
 #        folder under the same directory as this script's current directory.
 
-#    Optional Argument 1, "bool_removeZeroZdisp":
+#    Optional Argument 1, "removeZeroZ":
 #        boolean to turn on/off "dispZ != 0" data removal tool.
 #        Setting this to 1 will remove all data points that have an 
 #        displaced Z value of 0mm; this removes data with 0 displacement,
@@ -46,19 +46,19 @@
 #        Setting this to 0 keeps data unaffected. 
 #        Default is 0 a.k.a. False.
 
-#    Optional argument 2, "output3Dplot": (work in progress--to be completed)
+#    Optional argument 2, "outputPlot": (work in progress--to be completed)
 #        boolean to deliver 3D plots of the displacement field
 #        from given TecData, which will be saved in ".png" format
 #        in the same location as the compressed ".npz" files.
 #        Default is 0 a.k.a. False.
 
-#    Optional argument 3: "plotSurfaceGrid" (work in progress--to be completed)
+#    Optional argument 3: "surfaceGrid" (work in progress--to be completed)
 #        boolean to turn on/off grid representing apparatus surface @ Z=10mm. 
 #        This grid is added to the 3D plots as a visual aid,
 #        replacing the data points where Z displacement = 0mm.
 #        Default is 0 a.k.a. False.
-#        If optional argument 2 "output3Dplot" is 0,
-#        OR if optional argument 1 "bool_removeZeroZdisp" is 0,
+#        If optional argument 2 "outputPlot" is 0,
+#        OR if optional argument 1 "removeZeroZ" is 0,
 #        then this option is also 0 by default, regardless of cmd line input.
 # =============================================================================
 
@@ -110,34 +110,41 @@
 ##
 ## -> change command directory by typing the command "cd " (with a space),
 ##    then paste the filepath of this script's containing folder 
-##    (using the keyboard shortcut "ctrl+v"), e.g., "cd C:\temp" 
+##    (using the keyboard shortcut "ctrl+v"), e.g., cd C:\temp
+##
+##    --> note: if necessary, use the commands "C:" or "cd /d C:"
+##              to switch disks to the C drive (or any drive of your choosing)
 ##
 ## -> press "enter" (you should see the directory change on the command line)
 ## 
-## -> type "python cmd_BubbleDataHelper.py arg1 arg2 arg3 arg4" 
+## -> type 
+##
+##    python cmd_BubbleDataHelper.py --dataFolder arg1 --removeZeroZ arg2
+##    --outputPlot arg3 --surfaceGrid arg4 
+##
 ##    where "arg1", "arg2", "arg3", and "arg4" are replaced with the
 ##    correct argument inputs as described in the previous section:
 ##    
-##    --> "arg1" is "dataFolderDirectory", a string of the file path of the 
+##    --> "arg1" is "dataFolder", a string of the file path of the 
 ##        folder that contains the ".dat" files to be compressed;
-##        e.g.: "C:\temp\Example"
+##        e.g.: C:\temp\Example
 ##
-##    --> "arg2" is "bool_removeZeroZdisp", a boolean that decides whether 
+##    --> "arg2" is "removeZeroZ", a boolean that decides whether 
 ##        or not to remove data points where Z displacement is 0mm;
 ##        use 1 for true, 0 for false; if no input is given, the script
 ##        will use default value of 0
 ##    
-##    --> "arg3" is "output3Dplot", a boolean that decides whether or not to    
+##    --> "arg3" is "outputPlot", a boolean that decides whether or not to    
 ##        output plots of the given data, which will be saved in ".png" format
 ##        in the same location as the compressed ".npz" files;
 ##        use 1 for true, 0 for false; if no input is given, the script
 ##        will use default value of 0
 ##        (work in progress--to be completed)
 ##
-##    --> "arg4" is "plotSurfaceGrid", a boolean that decides whether or not
+##    --> "arg4" is "surfaceGrid", a boolean that decides whether or not
 ##        to include a 2D grid representing the apparatus surface @ Z=10mm;        
 ##        use 1 for true, 0 for false; as said earlier,
-##        if "bool_removeZeroZdisp"=0 or "output3Dplot"=0, the script
+##        if "removeZeroZ"=0 or "outputPlot"=0, the script
 ##        will use default value of 0; also, if no input is given, the script
 ##        will use default value of 0
 ##        (work in progress--to be completed)
@@ -148,29 +155,38 @@
 ##    and you wish to include a 2D grid at the apparatus surface,
 ##    type the following:
 ##
-##    python cmd_BubbleDataHelper.py C:\temp\Example 1 1 1
+##    python cmd_BubbleDataHelper.py --dataFolder C:\temp\Example
+##    --removeZeroZ 1 --outputPlot 1 --surfaceGrid 1
 ## 
 ## -> press "enter"
 ##
 ##
+##    note: the arguments can be given in any order, for example...
+##          python cmd_BubbleDataHelper.py --surfaceGrid 1 --outputPlot 1 
+##          --removeZeroZ 1 --dataFolder C:\temp\Example
+##      
+##    note: if there are spaces within folder names in the necessary paths, 
+##          you may use quotation marks to avoid errors, e.g., instead of 
+##          cd C:\temp\Example with Space\Example, you can use
+##          cd C:\temp\"Example with Space"\Example, or
+##          cd "C:\temp\Example with Space\Example" 
 ##
-##   (note: this function will also work using "True", "T", or "t" for 1
-##          & "False", "F", or "f" for 0) 
+##    note: this function will also work using "True", "T", or "t" for 1
+##          & "False", "F", or "f" for 0)
 ##
-##
-##   note: for the work-in-progress sections, the arguments will be unused
-##         until the coding is completed
-##
+##    note: for the work-in-progress sections, the arguments will be unused
+##          until the coding is completed
 ##=============================================================================
 ###############################################################################
 
 import sys
 import os
 import os.path as path
+import argparse
 import glob
 import numpy as np
 
-# this function evaluates the given folder path argument, dataFolderDirectory,
+# this function evaluates the given folder path argument, dataFolder,
 # to determine if it is valid
 def is_folderPathStr_valid(folderPath):
     try:
@@ -220,74 +236,66 @@ def parse_boolean(arg):
 # otherwise, the script continues
 def check_given_arguments():
     try:
-        # from the command line, a string of the script's name is automatically 
-        # assigned as the first element of "sys.argv", 
-        # i.e., sys.argv[0] = 'cmd_BubbleDataHelper.py';
-        # if the length of sys.argv is 1, then no arguments were given,
+        # from the command line, the argument parser will interpret the 
+        # given arguments as strings; if the required argument (dataFolder) 
+        # is not given, then an error message is shown,
         # and the operation will be cancelled.
-        if len(sys.argv) == 1:
-            print('Error encountered: no arguments given.')
-            print('Cancelling operation...\n')
-            sys.exit()
         
-        elif len(sys.argv) == 2:
-            dataFolderDirectory = is_folderPathStr_valid(sys.argv[1])
-            # with only 1 argument given, 
-            # the optional arguments default to False:
-            bool_removeZeroZdisp = False
-            output3Dplot = False
-            plotSurfaceGrid = False
+        parser = argparse.ArgumentParser()
+        parser.add_argument('--dataFolder', required=True)
+        parser.add_argument('--removeZeroZ', default=False)
+        parser.add_argument('--outputPlot', default=False)
+        parser.add_argument('--surfaceGrid', default=False)
         
-        elif len(sys.argv) == 3:
-            dataFolderDirectory = is_folderPathStr_valid(sys.argv[1])           
-            bool_removeZeroZdisp = parse_boolean(sys.argv[2])
-            # with 2 arguments given, 
-            # the rest of the optional arguments default to False:
-            output3Dplot = False
-            plotSurfaceGrid = False
-
-        elif len(sys.argv) == 4:
-            dataFolderDirectory = is_folderPathStr_valid(sys.argv[1])
-            bool_removeZeroZdisp = parse_boolean(sys.argv[2])
-            output3Dplot = parse_boolean(sys.argv[3])
-            # with 3 arguments given, 
-            # the rest of the optional arguments default to False:
-            plotSurfaceGrid = False
+        args = parser.parse_args()
+        
+        argDictionary= {'dataFolder' : args.dataFolder,
+                        'removeZeroZ' : args.removeZeroZ,
+                        'outputPlot' : args.outputPlot,
+                        'surfaceGrid' : args.surfaceGrid} 
+        
+        # the code continues only if the required dataFolder argument is given        
+        dataFolder = is_folderPathStr_valid(argDictionary['dataFolder'])
             
-        elif len(sys.argv) >= 5:
-            # with all arguments given, the script assigns arguments properly;
-            # any other additional arguments provided will be ignored 
-            dataFolderDirectory = is_folderPathStr_valid(sys.argv[1])
-            bool_removeZeroZdisp = parse_boolean(sys.argv[2])
-            output3Dplot = parse_boolean(sys.argv[3])
-            plotSurfaceGrid = parse_boolean(sys.argv[4])
+        if argDictionary['removeZeroZ'] is None:
+            removeZeroZ = False
+        else:
+            removeZeroZ = parse_boolean(argDictionary['removeZeroZ'])
+
+        if argDictionary['outputPlot'] is None:
+            outputPlot = False
+        else:
+            outputPlot = parse_boolean(argDictionary['outputPlot'])
+                
+        if argDictionary['surfaceGrid'] is None:
+            surfaceGrid = False
+        else:
+            surfaceGrid = parse_boolean(argDictionary['surfaceGrid'])
 
     except ValueError:
         print('Error encountered when parsing arguments.')
         print('Cancelling operation...\n')
         sys.exit()
         
-    return [dataFolderDirectory, bool_removeZeroZdisp, \
-            output3Dplot, plotSurfaceGrid]
+    return [dataFolder, removeZeroZ, outputPlot, surfaceGrid]
 
 ###############################################################################
 
 # run the "check_given_arguments()" function to check the given arguments;
 # operation will either continue with the proper arguments as given
 # or end without further action        
-[dataFolderDirectory, bool_removeZeroZdisp, output3Dplot, plotSurfaceGrid] = \
-    check_given_arguments()
+[dataFolder, removeZeroZ, outputPlot, surfaceGrid] = check_given_arguments()
 
-# if output3Dplot is False, or if bool_removeZeroZdisp is False,
-# then plotSurfaceGrid must be false by default, regardless of user input:
-if not bool_removeZeroZdisp : plotSurfaceGrid = False
-if not output3Dplot : plotSurfaceGrid = False
+# if outputPlot is False, or if removeZeroZ is False,
+# then surfaceGrid must be false by default, regardless of user input:
+if not removeZeroZ : surfaceGrid = False
+if not outputPlot : surfaceGrid = False
 
 # use the python "global" module to find all ".dat" files in the given folder
-datFileList = glob.glob( path.join(dataFolderDirectory, '*.dat') )
+datFileList = glob.glob( path.join(dataFolder, '*.dat') )
 
 # print out the total # of ".dat" files found in the given folder
-print('Found', len(datFileList), '".dat" files in folder', dataFolderDirectory)
+print('Found', len(datFileList), '".dat" files in folder', dataFolder)
 
 # if there are 1 or more ".dat" files, continue; otherwise, stop operation
 if len(datFileList) > 0:
@@ -300,7 +308,7 @@ if len(datFileList) > 0:
 
     # create a path for a new folder in which the compressed data will be saved
     npzFolder = path.join(dir_path, 'CompressedNumpyData_' + \
-                          path.basename( path.split(dataFolderDirectory)[1] ))
+                          path.basename( path.split(dataFolder)[1] ))
     
     # if the new folder in which compressed data will be saved already exists,
     # cancel the operation & display a message; otherwsie, continue
@@ -325,16 +333,20 @@ if len(datFileList) > 0:
             ## load data file into a numpy array
             ## parameter "skiprows" is used to remove headers in ".dat" files
         
-            # if argument "bool_removeZeroZdisp" is True,
+            # if argument "removeZeroZ" is True,
             # remove 0mm Z-displacment data points;
-            # otherwsie, continue without affecting data
-            if bool_removeZeroZdisp:
-                datNumpyArray = datNumpyArray[datNumpyArray[:,5] != 0]
-                # the sixth column contains Z-displacement data;
-                # "datNumpyArray = datNumpyArray[datNumpyArray[:,5] != 0]" 
+            # otherwise, continue without affecting data
+            if removeZeroZ:
+                datNumpyArray = datNumpyArray[ (datNumpyArray[:,2] != 0) \
+                                              | (datNumpyArray[:,5] != 0)]
+                # the 6th column contains Z-displacement data,
+                # the 3rd column contains initial Z data;
+                # datNumpyArray = datNumpyArray[ (datNumpyArray[:,2] != 0) \
+                #                               | (datNumpyArray[:,5] != 0)]
                 # is read as:
                 # "keep all rows of 'datNumpyArray' where the number in the
-                # 6th column of 'datNumpyArray' is nonzero"
+                # 6th column of 'datNumpyArray' is nonzero
+                # OR where the number in 3rd column is nonzero"
                 
             ## save numbers into a compressed numpy array (headers are removed)
             ## note: "zippedArray" is an arbitrary callback to retrieve data
@@ -356,8 +368,7 @@ if len(datFileList) > 0:
 ## utilizes the "global" method to find files with ".npz" extension
 #
 #unzippedDictionary = {} 
-## initialize empty dictionary; 
-## data will be saved into this variable
+## initialize empty dictionary; data will be saved into this variable
 #
 #for line in datZippedList :
 ## uncomment these 2 lines for further understanding of file manipulation 
@@ -381,5 +392,5 @@ if len(datFileList) > 0:
 
 #### to do:
 ### add option to output plots of data in each ".dat" file
-### add option to place grid @ Z = 10mm and/or output 
+### add option to place grid @ Z = 10mm on output plots
 ### (not entirely necessary but may be a good visual aid )
