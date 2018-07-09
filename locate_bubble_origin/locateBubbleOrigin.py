@@ -173,7 +173,7 @@ intersect_coordinate_str = '(%.2f, %.2f)' %(x_intersect, y_intersect)
 
 plt.annotate(intersect_coordinate_str, 
              size=7,
-#             color='r',
+             color='k',
              xy = [x_intersect, y_intersect],
              xytext=(-120, -75),
              textcoords = 'offset pixels',
