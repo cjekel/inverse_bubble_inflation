@@ -28,7 +28,6 @@
 ##         File compression;
 ##             zero-Z-displacement data removal to isolate specimen;
 ##                 optional plot grid @ apparatus surface 
-##                 (work in progress--to be completed)
 ##=============================================================================
 # =============================================================================
 #    This function has 1 required argument and 3 optional arguments.
@@ -437,8 +436,8 @@ if len(datFileList) > 0:
                         ax.plot_wireframe(x_surf, y_surf, z_surf, color='k', \
                                           linewidth=0.5, linestyle='--', \
                                           rcount=10, ccount=10)
+                        
 ###############################################################################                    
-
                 ## save plot: default size & resolution
                 if not (plotFolderAlreadyExists):
                     plt.savefig(path.join(plotFolder, \
