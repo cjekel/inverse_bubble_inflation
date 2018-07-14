@@ -33,7 +33,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-dicFile = 'C:\\temp\\Valmex_BubbleTest01_TecData_demo\\B00001.dat'
+dicFile = 'C:\\temp\\Valmex_BubbleTest01_TecData_demo\\B00015.dat'
 ## the .dat file is hard-coded for demo purposes...
 
 ##=============================================================================
@@ -70,10 +70,10 @@ finalZ = Z+dispZ
 ##=============================================================================
 
 # find the minimum and maximum values in the x- and y-directions
-xMin = np.min(finalX)
-xMax = np.max(finalX) 
-yMin = np.min(finalY)
-yMax = np.max(finalY)
+xMin = min(finalX)
+xMax = max(finalX) 
+yMin = min(finalY)
+yMax = max(finalY)
 
 # find the maximum value in the z-direction
 zMax = np.max(finalZ)
@@ -89,13 +89,12 @@ x_coordinate_of_zMax = finalX[ finalZ.argmax() ]
 y_coordinate_of_zMax = finalY[ finalZ.argmax() ]
 
 
-
-from time import time
-
-t0 = time()
+#==============================================================================
+# 2D plot
+#==============================================================================
 
 newFig = plt.figure()
-#ax = newFig.add_subplot(111)
+axNewFig = newFig.add_subplot(111)
 
 plt.scatter(finalX, finalY, c=finalZ, s=8, edgecolor='')
 #plt.scatter(finalX, finalY, c=finalZ, s=5, edgecolor='', cmap=plt.cm.Pastel1)
@@ -173,64 +172,87 @@ intersect_coordinate_str = '(%.2f, %.2f)' %(x_intersect, y_intersect)
 
 plt.annotate(intersect_coordinate_str, 
              size=7,
-#             color='r',
+             color='k',
              xy = [x_intersect, y_intersect],
              xytext=(-120, -75),
              textcoords = 'offset pixels',
              arrowprops=dict(facecolor='black', arrowstyle='->'))
 
+#plt.show()
 
 
+#==============================================================================
+# 3D plot (plot of the surfaces fits of Disp Z)
+#==============================================================================
+
+from doubleVander import doubleVander
+from polySurfaceFit import polySurfaceFit
+from correctZ import correctZ
+
+newFinalX, newFinalY, newFinalZ = correctZ(X, Y, Z, dispX, dispY, dispZ)
+
+cDispZ, rDispZ, fittedDispZ = polySurfaceFit(newFinalX,newFinalY,newFinalZ, 4)
+
+X,Y = np.meshgrid(np.linspace(min(newFinalX), max(newFinalX), 20), \
+                  np.linspace(min(newFinalY), max(newFinalY), 20))
+
+Axy = doubleVander(X.flatten(),Y.flatten(),4)
+
+ZZ = np.dot(Axy,cDispZ)
+Z = ZZ.reshape(X.shape)
+
+#   3D plot of the X, Y, disp Z
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
+
+ax.plot_surface(X, Y, Z, rstride=1, cstride=1, alpha=0.2)
+
+ax.scatter(newFinalX, newFinalY, newFinalZ, zdir='z',s=.2,c='b',edgecolor='')
+
+ax.set_aspect('equal')
+#ax.view_init(90, 90)
+
+if len(values) > 0: 
+     xMin = np.round( np.min(finalX) ); xMax = np.round( np.max(finalX) ) 
+     yMin = np.round( np.min(finalY) ); yMax = np.round( np.max(finalY) ) 
+#     zMin = np.round( np.min(finalZ) );
+     zMax = np.round( np.max(finalZ) ) 
+     ax.set_xlim3d( xMin-5, xMax+5 ) 
+     ax.set_ylim3d( yMin-5, yMax+5 )
+     ax.set_zlim3d(-100, zMax+5)
+else:
+    ax.set_xlim3d(-100, 100)
+    ax.set_ylim3d(-100,100)
+    ax.set_zlim3d(-100,100)
+ 
+ax.set_xlabel('X (mm)')
+ax.set_ylabel('Y (mm)')
+ax.set_zlabel('Z (mm)')
+
+ax.set_title('3D plot of Disp Z over the XY bubble position')
+
+
+#==============================================================================
+# Marking the highest Z from the fitted polynomial on 2D plot
+#==============================================================================
+
+#correctedMaxZ = max(ZZ)
+#correctedMaxZ_xCoordinate = X[np.argmax(Z)]
+#correctedMaxZ_yCoordinate = Y[np.argmax(Z)]
+
+x_coord, y_coord = np.unravel_index(Z.argmax(), Z.shape)
+
+ax.scatter(X[x_coord,y_coord], Y[x_coord,y_coord], \
+           c='k', s=100, edgecolor='', marker='+')
+
+axNewFig.scatter(X[x_coord,y_coord], Y[x_coord,y_coord], \
+                 c='k', s=100, edgecolor='', marker='+')
+
+axNewFig.annotate('Z-polyfit$_{max}$', 
+             size=7,
+             xy = [X[x_coord,y_coord], Y[x_coord,y_coord]],
+             xytext=(20, 15),
+             textcoords = 'offset pixels',
+             arrowprops=dict(facecolor='black', arrowstyle='->'))
 
 plt.show()
-
-t1 = time()
-
-print('\nPlotting runtime: %s seconds' %(t1-t0))
-
-
-##=============================================================================
-## 
-##=============================================================================
-##   plots of the specimen in 3D
-##=============================================================================
-#fig = plt.figure() # creating a figure object...
-#ax = fig.add_subplot(111, projection='3d') # adding an empty plot to figure...
-#
-#ax.scatter(finalX, finalY, finalZ, zdir='z', s=.05, c='b')
-## "  zdir='z'  " orients the data so the Z axis is the chosen vertical axis
-## "s" = "size"; sets the desired marker size for each data point
-##               (per documentation, units are "points^2")
-## "c" = "color"; sets the color of the data points ('b' for "blue") 
-# 
-## defining axes limits: the specimen is revealed when "values_ZeroDispRemoved"
-## is plotted; "values" shows the specimen plus test apparatus data points
-## (nodes from the apparatus have 0mm Z-displacement by default)
-# 
-## the maximum and minimum values for both "values" & "values_ZeroDispRemoved"
-## can be viewed with the following commands:
-#np.max(X+dispX), np.min(X+dispX)
-#np.max(Y+dispY), np.min(Y+dispY)
-#np.max(Z+dispZ), np.min(Z+dispZ)
-# 
-## axes limits were chosen by rounding the max & min values 
-## and increasing the range by 5mm for maximums and -5mm for minimums
-## (conditions were added to handle situations when 0 data points remain)
-#if len(values) > 0: 
-#     xMin = np.round( np.min(finalX) ); xMax = np.round( np.max(finalX) ) 
-#     yMin = np.round( np.min(finalY) ); yMax = np.round( np.max(finalY) ) 
-#     zMin = np.round( np.min(finalZ) ); zMax = np.round( np.max(finalZ) ) 
-#     ax.set_xlim3d( xMin-5, xMax+5 ) 
-#     ax.set_ylim3d( yMin-5, yMax+5 )
-#     ax.set_zlim3d( zMin-5, zMax+5 )
-#else:
-#    ax.set_xlim3d(-100, 100)
-#    ax.set_ylim3d(-100,100)
-#    ax.set_zlim3d(-8,50)
-# 
-#ax.set_xlabel('X (mm)')
-#ax.set_ylabel('Y (mm)')
-#ax.set_zlabel('Z (mm)')
-#plt.show()
-#
-##=============================================================================
