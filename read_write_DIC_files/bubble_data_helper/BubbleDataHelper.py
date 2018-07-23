@@ -441,6 +441,7 @@ if len(datFileList) > 0:
                 ## save plot: default size & resolution
                 if not (plotFolderAlreadyExists):
                     plt.savefig(path.join(plotFolder, \
+										  path.basename(dataFolder)+'_'+ \
                                           fileNameNoExtension+'.png'), \
                                 bbox_inches='tight', dpi=100)
                 
@@ -451,7 +452,8 @@ if len(datFileList) > 0:
                     ## and were chosen as a suitable high-definition size
                     fig.set_size_inches(np.array([13.66,7.02]))
                     plt.savefig(path.join(plotHQFolder, \
-                                      fileNameNoExtension+'_HQ.png'), \
+                                          path.basename(dataFolder)+'_'+ \
+									      fileNameNoExtension+'_HQ.png'), \
                             bbox_inches='tight', dpi=300)
             
 ###############################################################################                

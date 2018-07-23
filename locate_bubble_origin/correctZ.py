@@ -69,4 +69,4 @@ def correctZ(X, Y, Z, dispX, dispY, dispZ):
 #            correctZ1.append(correctZ[i])
     
     
-    return finalX, finalY, finalDispZ;
+    return finalX, finalY, finalDispZ, xCenter, yCenter;

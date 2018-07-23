@@ -23,6 +23,8 @@
 # THE SOFTWARE.
 # =============================================================================
 
+# Note: this is an updated version of Charles Jekel's original
+# "readDataPLotDispField.py" file.
 
 #    Read Data from the DIC
 #    import necessary libraries
@@ -30,7 +32,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 #   ***** I've commented out the export functionality of this program *****
-dicFile = 'C:\\temp\\Valmex_BubbleTest01_TecData_demo\\B00015.dat'
+dicFile = 'C:\\temp\\demo\\B00015.dat'
 exportFile = 'coeffs20'
 #   Define a function that combines two vander matricies for use with least
 #   Square polynomial regression fitting for three dimensional data
@@ -229,7 +231,7 @@ plt.show()
 fig = plt.figure()
 ax = fig.add_subplot(111)
 plt.plot(finalX,finalDispX,'bo',mew=0,ms=2,alpha=0.5,label='disp X')
-plt.plot(finalX,fittedDispX,'ro',mew=0,ms=.75,alpha=1,label='fitted Disp X')
+plt.plot(finalX,fittedDispX,'ro',mew=0,ms=.75,alpha=.8,label='fitted Disp X')
 plt.xlabel('X (mm)')
 plt.ylabel('disp X (mm)')
 plt.title('The X and disp X values')
@@ -241,7 +243,7 @@ plt.show()
 fig = plt.figure()
 ax = fig.add_subplot(111)
 plt.plot(finalY,finalDispX,'bo',mew=0,ms=2,alpha=0.5,label='disp X',)
-plt.plot(finalY,fittedDispX,'ro',mew=0,ms=.75,alpha=1,label='fitted Disp X')
+plt.plot(finalY,fittedDispX,'ro',mew=0,ms=.75,alpha=.8,label='fitted Disp X')
 plt.xlabel('Y (mm)')
 plt.ylabel('disp X (mm)')
 plt.title('The Y and disp X values')
@@ -274,7 +276,7 @@ plt.show()
 fig = plt.figure()
 ax = fig.add_subplot(111)
 plt.plot(finalX,finalDispY,'bo',mew=0,ms=2,alpha=0.5,label='disp Y')
-plt.plot(finalX,fittedDispY,'ro',mew=0,ms=.75,alpha=1,label='fitted Disp Y')
+plt.plot(finalX,fittedDispY,'ro',mew=0,ms=.75,alpha=.8,label='fitted Disp Y')
 plt.xlabel('X (mm)')
 plt.ylabel('disp Y (mm)')
 plt.title('The X and disp Y values')
@@ -286,7 +288,7 @@ plt.show()
 fig = plt.figure()
 ax = fig.add_subplot(111)
 plt.plot(finalY,finalDispY,'bo',mew=0,ms=2,alpha=0.5,label='disp Y')
-plt.plot(finalY,fittedDispY,'ro',mew=0,ms=.75,alpha=1,label='fitted Disp Y')
+plt.plot(finalY,fittedDispY,'ro',mew=0,ms=.75,alpha=.8,label='fitted Disp Y')
 plt.xlabel('Y (mm)')
 plt.ylabel('disp Y (mm)')
 plt.title('The Y and disp Y values')
@@ -320,7 +322,7 @@ plt.show()
 fig = plt.figure()
 ax = fig.add_subplot(111)
 plt.plot(finalX,finalDispZ,'bo',mew=0,ms=2,alpha=0.5,label='dispZ')
-plt.plot(finalX,fittedDispZ,'ro',mew=0,ms=.75,alpha=1,label='fitted DispZ')
+plt.plot(finalX,fittedDispZ,'ro',mew=0,ms=.75,alpha=.8,label='fitted DispZ')
 plt.xlabel('X (mm)')
 plt.ylabel('disp Z (mm)')
 plt.title('The X and disp Z values')
@@ -332,7 +334,7 @@ plt.show()
 fig = plt.figure()
 ax = fig.add_subplot(111)
 plt.plot(finalY,finalDispZ,'bo',mew=0,ms=2,alpha=0.5,label='disp Z')
-plt.plot(finalY,fittedDispZ,'ro',mew=0,ms=.75,alpha=1,label='fitted Disp Z')
+plt.plot(finalY,fittedDispZ,'ro',mew=0,ms=.75,alpha=.8,label='fitted Disp Z')
 plt.xlabel('Y (mm)')
 plt.ylabel('disp Z (mm)')
 plt.title('The Y and disp Z values')
