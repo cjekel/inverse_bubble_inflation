@@ -208,7 +208,16 @@ def locateBubbleOrigin(dicFileInput, plotFilePath2D, plotFilePath3D):
                  s=.2,c='b',edgecolor='', depthshade=False)
     
     ax3D.set_aspect('equal')
-     
+    
+    # suitable axes limits were determined to encompass all data for all
+    # bubble tests; the hard-coded limits below are a result of inspecting
+    # the resulting fitted graphs from matplotlib's default fitting behavior...
+    # ...these limits were selected as a result of the above:
+    ax3D.set_xlim3d(-120, 120)
+    ax3D.set_ylim3d(-120, 120)
+    ax3D.set_zlim3d(-120, 180)
+    # (there may be some cut-offs from hyperbolic-shaped polynomial fit curves)
+    
     ax3D.set_xlabel('X (mm)')
     ax3D.set_ylabel('Y (mm)')
     ax3D.set_zlabel('Z (mm)')
@@ -284,7 +293,7 @@ def locateBubbleOrigin(dicFileInput, plotFilePath2D, plotFilePath3D):
     #==========================================================================
     # Resize 2D figure, generate legend, and show and/or save plots 
     #==========================================================================
-    fig2D.set_size_inches(np.array([12,12]))
+    fig2D.set_size_inches(np.array([10,10]))
     ax2D.set_aspect('equal')
     ax2D.xaxis.set_ticks(np.arange(-100, 125, 25))
     ax2D.yaxis.set_ticks(np.arange(-100, 125, 25))
@@ -296,7 +305,7 @@ def locateBubbleOrigin(dicFileInput, plotFilePath2D, plotFilePath3D):
     fig2D.savefig(plotFilePath2D, bbox_inches='tight', dpi=200)
     plt.close(fig2D)
 
-    fig3D.set_size_inches(np.array([8,8]))
+    fig3D.set_size_inches(np.array([6,6]))
 #    fig3D.show()
     fig3D.savefig(plotFilePath3D, bbox_inches='tight', dpi=200)
     plt.close(fig3D)
@@ -319,18 +328,14 @@ import glob
 
 datFolderNameList = \
     [ \
-    'C:\\temp\Blue_PVC_Valmex_BubbleTest00', \
-    'C:\\temp\Blue_PVC_Valmex_BubbleTest01', \
-    'C:\\temp\Blue_PVC_Valmex_BubbleTest02', \
-    'C:\\temp\Blue_PVC_Valmex_BubbleTest03', \
-    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest01\\' + \
-        'BubbleTest01_Strain_LSM_TS (27x27 stepsize=7)', \
-    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest02\\' + \
-        'BubbleTest02_Strain_LSM_TS (27x27 stepsize=7)', \
-    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest03\\' + \
-        'BubbleTest03_Strain_LSM_TS (27x27 stepsize=7)', \
-    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest04\\' + \
-        'BubbleTest04_Strain_LSM_TS (27x27 stepsize=7)', \
+    'C:\\temp\Blue_PVC_Valmex_BubbleTest00',\
+    'C:\\temp\Blue_PVC_Valmex_BubbleTest01',\
+    'C:\\temp\Blue_PVC_Valmex_BubbleTest02',\
+    'C:\\temp\Blue_PVC_Valmex_BubbleTest03',\
+    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest01',\
+    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest02',\
+    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest03',\
+    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest04' \
     ]
 
 for line in datFolderNameList :
