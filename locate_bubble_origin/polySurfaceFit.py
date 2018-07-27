@@ -29,7 +29,9 @@ import numpy as np
 #   Define a function that fits a polynomial surface to given x y and z
 #   The fit finds the dgree polynomail that fits to the z given xy ie finds
 #   z(x,y). This uses the least squares fitting method
+
 def polySurfaceFit(x, y, z, degree):
+    
     A = doubleVander(x,y,degree)
     c, r, rank, singval = np.linalg.lstsq(A,z)
     ZZ = np.dot(A,c)

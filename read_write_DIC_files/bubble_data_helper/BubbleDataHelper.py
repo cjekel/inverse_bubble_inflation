@@ -403,24 +403,33 @@ if len(datFileList) > 0:
                     ax.scatter(finalX, finalY, finalZ, zdir='z',\
                                s=.2, c='b', depthshade=False, edgecolor='')
                     
-                    if len(datNumpyArray) > 0: 
-                        xMin = np.round( np.min(finalX) )
-                        xMax = np.round( np.max(finalX) ) 
-                        yMin = np.round( np.min(finalY) )
-                        yMax = np.round( np.max(finalY) ) 
-                        zMin = np.round( np.min(finalZ) )
-                        zMax = np.round( np.max(finalZ) ) 
-                        ax.set_xlim3d( xMin-5, xMax+5 ) 
-                        ax.set_ylim3d( yMin-5, yMax+5 )
-                        ax.set_zlim3d( zMin-5, zMax+5 )
-                    else:
-                        xMin = -100; xMax = 100
-                        yMin = -100; yMax = 100
-                        zMin = -8; zMax = 50
-                        ax.set_xlim3d(xMin, xMax)
-                        ax.set_ylim3d(yMin, yMax)
-                        ax.set_zlim3d(zMin, zMax)
-                        
+                    # the commented-out code below was used to determine
+                    # suitable axes limits that encompassed all data for all
+                    # bubble tests; the hard-coded limits below are a result 
+                    # of inspecting the resulting fitted graphs...
+#                    if len(datNumpyArray) > 0: 
+#                        xMin = np.round( np.min(finalX) )
+#                        xMax = np.round( np.max(finalX) ) 
+#                        yMin = np.round( np.min(finalY) )
+#                        yMax = np.round( np.max(finalY) ) 
+#                        zMin = np.round( np.min(finalZ) )
+#                        zMax = np.round( np.max(finalZ) ) 
+#                        ax.set_xlim3d( xMin-5, xMax+5 ) 
+#                        ax.set_ylim3d( yMin-5, yMax+5 )
+#                        ax.set_zlim3d( zMin-5, zMax+5 )
+#                    else:
+#                        xMin = -100; xMax = 100
+#                        yMin = -100; yMax = 100
+#                        zMin = -8; zMax = 50
+#                        ax.set_xlim3d(xMin, xMax)
+#                        ax.set_ylim3d(yMin, yMax)
+#                        ax.set_zlim3d(zMin, zMax)
+                    
+                    # ...these limits were selected as a result of the above:    
+                    ax.set_xlim3d(-120, 120)
+                    ax.set_ylim3d(-120, 120)
+                    ax.set_zlim3d(-120, 180)
+                    
                     ax.set_xlabel('X (mm)')
                     ax.set_ylabel('Y (mm)')
                     ax.set_zlabel('Z (mm)')
@@ -429,8 +438,10 @@ if len(datFileList) > 0:
                     # if argument "surfaceGrid" is True, add a 2D grid @ Z=10mm
                     # otherwise, continue without affecting data
                     if surfaceGrid:
-                        x_surf=np.arange(xMin-5, xMax+5, 1)
-                        y_surf=np.arange(yMin-5, yMax+5, 1)
+#                        x_surf=np.arange(xMin-5, xMax+5, 1)
+#                        y_surf=np.arange(yMin-5, yMax+5, 1)
+                        x_surf=np.arange(-120, 120, 1)
+                        y_surf=np.arange(-120, 120, 1)
                         x_surf, y_surf = np.meshgrid(x_surf,y_surf,sparse=True)
                         z_surf = 10             
                         ax.plot_wireframe(x_surf, y_surf, z_surf, color='k', \
@@ -441,6 +452,7 @@ if len(datFileList) > 0:
                 ## save plot: default size & resolution
                 if not (plotFolderAlreadyExists):
                     plt.savefig(path.join(plotFolder, \
+										  path.basename(dataFolder)+'_'+ \
                                           fileNameNoExtension+'.png'), \
                                 bbox_inches='tight', dpi=100)
                 
@@ -451,8 +463,11 @@ if len(datFileList) > 0:
                     ## and were chosen as a suitable high-definition size
                     fig.set_size_inches(np.array([13.66,7.02]))
                     plt.savefig(path.join(plotHQFolder, \
-                                      fileNameNoExtension+'_HQ.png'), \
+                                          path.basename(dataFolder)+'_'+ \
+									      fileNameNoExtension+'_HQ.png'), \
                             bbox_inches='tight', dpi=300)
+                            
+                plt.close(fig)
             
 ###############################################################################                
             ## save numbers into a compressed numpy array (headers are removed)
