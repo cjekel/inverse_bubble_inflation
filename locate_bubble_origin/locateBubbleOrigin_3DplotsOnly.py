@@ -460,13 +460,20 @@ for line in datFolderNameList :
 #The lowest Y value is: -106.315826
 #The lowest Z value is: -121.446724849
 
-#The highest X value is: 99.648605
-#The highest Y value is: 114.224746
-#The highest Z value is: 3166.28546918
-#The lowest X value is: -110.493572
-#The lowest Y value is: -106.315826
-#The lowest Z value is: -1173.76981509
-#The total elapsed time is: 585.5147442817688 seconds
+# Note: Black Cape Coaters tests 3 & 4 require manual fixes;
+# including those tests in the script results in a higher maxZ
+# and a lower minZ:
+#(result if Black Cape Coaters tests 3 & 4 remain in queue...)
+####The highest X value is: 99.648605
+####The highest Y value is: 114.224746
+####The highest Z value is: 3166.28546918
+####The lowest X value is: -110.493572
+####The lowest Y value is: -106.315826
+####The lowest Z value is: -1173.76981509
+####The total elapsed time is: 585.5147442817688 seconds
+        
+# The previous limits were used pending fixes to Black Cape Coaters tests 3 & 4
+
 # =============================================================================
 
 t1 = time()
