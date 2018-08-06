@@ -16,5 +16,5 @@ python BubbleDataHelper.py --dataFolder C:\\temp\Blue_PVC_Valmex_BubbleTest02 --
 python BubbleDataHelper.py --dataFolder C:\\temp\Blue_PVC_Valmex_BubbleTest03 --removeZeroZ True --outputPlot True --surfaceGrid True
 python BubbleDataHelper.py --dataFolder C:\\temp\Black_PVC_Cape_Coaters_BubbleTest01\ --removeZeroZ True --outputPlot True --surfaceGrid True
 python BubbleDataHelper.py --dataFolder C:\\temp\Black_PVC_Cape_Coaters_BubbleTest02\ --removeZeroZ True --outputPlot True --surfaceGrid True
-python BubbleDataHelper.py --dataFolder C:\\temp\Black_PVC_Cape_Coaters_BubbleTest03\ --removeZeroZ True --outputPlot True --surfaceGrid True
-python BubbleDataHelper.py --dataFolder C:\\temp\Black_PVC_Cape_Coaters_BubbleTest04\ --removeZeroZ True --outputPlot True --surfaceGrid True
+REM python BubbleDataHelper.py --dataFolder C:\\temp\Black_PVC_Cape_Coaters_BubbleTest03\ --removeZeroZ True --outputPlot True --surfaceGrid True
+REM python BubbleDataHelper.py --dataFolder C:\\temp\Black_PVC_Cape_Coaters_BubbleTest04\ --removeZeroZ True --outputPlot True --surfaceGrid True
