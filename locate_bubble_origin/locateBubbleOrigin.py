@@ -28,7 +28,6 @@
 ##     Mark the origin of the experimental data
 ##         based on various techniques on a 2D plot,
 ##             where Z data is represented with a colormap;
-##                 output histograms of the origin XY data for comparison
 ##=============================================================================
 
 import numpy as np
@@ -349,10 +348,7 @@ for line in datFolderNameList :
     os.makedirs(plotFolderPath2D)
     os.makedirs(plotFolderPath3D)
 
-    if 'Valmex' in line:
-        line = path.join(line, '*TecData*\*.dat')
-    elif 'Cape_Coaters' in line:
-        line = path.join(line, '*.dat')
+    line = path.join(line, '*.dat')
     
     datList = glob.glob(line)    
     
@@ -364,5 +360,7 @@ for line in datFolderNameList :
         plotFilePath3D = plotFilePath + '_poly3Dplot.png'
         plotFilePath3D = path.join(plotFolderPath3D, plotFilePath3D)
         locateBubbleOrigin(line, plotFilePath2D, plotFilePath3D)
-#        print(line, '\n', plotFilePath2D, '\n', plotFilePath3D)
-#    print()
+#        print(line)
+#        print(plotFilePath2D)
+#        print(plotFilePath3D)
+#    print('\n\n')
