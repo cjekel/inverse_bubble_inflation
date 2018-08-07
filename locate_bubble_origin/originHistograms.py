@@ -42,6 +42,8 @@ import matplotlib.pyplot as plt
 import glob
 from circleFit import circleFit
 
+import seaborn as sns
+
 ###############################################################################
 def generateHistogramFigure(origin_CircleFit_data,
                             origin_Intersect_data,
@@ -56,35 +58,53 @@ def generateHistogramFigure(origin_CircleFit_data,
     
     ax_circleFit = fig.add_subplot(221)
     ax_circleFit.set_title('CircleFit', fontsize='small')
-    ax_circleFit.hist(x = origin_CircleFit_data, \
-                      bins = 10,                 \
-                      alpha= 0.75,               \
-                      facecolor = 'blue',        \
-                      edgecolor = 'black')       
-        
+#    ax_circleFit.hist(x = origin_CircleFit_data, \
+#                      bins = 10,                 \
+#                      alpha= 0.75,               \
+#                      facecolor = 'blue',        \
+#                      edgecolor = 'black')      
+    sns.distplot(a = origin_CircleFit_data, \
+                 hist = True,               \
+                 bins = 10,                 \
+                 color = 'blue')
+            
     ax_intersect = fig.add_subplot(222)
     ax_intersect.set_title('Intersection', fontsize='small')
-    ax_intersect.hist(x = origin_Intersect_data, \
-                      bins = 10,                 \
-                      alpha= 0.75,               \
-                      facecolor = 'red',         \
-                      edgecolor = 'black')    
+#    ax_intersect.hist(x = origin_Intersect_data, \
+#                      bins = 10,                 \
+#                      alpha= 0.75,               \
+#                      facecolor = 'red',         \
+#                      edgecolor = 'black')    
+    sns.distplot(a = origin_Intersect_data, \
+                 hist = True,               \
+                 bins = 10,                 \
+                 color = 'red')
     
     ax_rawMedian = fig.add_subplot(223)
     ax_rawMedian.set_title('Raw Median', fontsize='small')
-    ax_rawMedian.hist(x = origin_RawMedian_Data, \
-                      bins = 10,                 \
-                      alpha= 0.75,               \
-                      facecolor = 'green',       \
-                      edgecolor = 'black')
+#    ax_rawMedian.hist(x = origin_RawMedian_Data, \
+#                      bins = 10,                 \
+#                      alpha= 0.75,               \
+#                      facecolor = 'green',       \
+#                      edgecolor = 'black')
+    sns.distplot(a = origin_RawMedian_Data, \
+                 hist = True,               \
+                 bins = 10,                 \
+                 color = 'green')
+    
     
     ax_polyMedian = fig.add_subplot(224)
     ax_polyMedian.set_title('PolyFit Median', fontsize='small')
-    ax_polyMedian.hist(x = origin_PolyMedian_Data, \
-                       bins = 10,                  \
-                       alpha =0.75,                \
-                       facecolor = 'yellow',       \
-                       edgecolor = 'black')   
+#    ax_polyMedian.hist(x = origin_PolyMedian_Data, \
+#                       bins = 10,                  \
+#                       alpha =0.75,                \
+#                       facecolor = 'yellow',       \
+#                       edgecolor = 'black')   
+    sns.distplot(a = origin_PolyMedian_Data,
+                 hist = True,               \
+                 bins = 10,                 \
+                 color = 'yellow')
+    
     
     fig.tight_layout()
     fig.subplots_adjust(top=0.90)
@@ -104,9 +124,11 @@ def generateHistogramFigure(origin_CircleFit_data,
 ###############################################################################
 def originHistograms(dicFolderInput, histogramFolder, originNPYfolder):
         
+    dicFolderInput = path.normpath(dicFolderInput)
+    
     baseName = path.basename(dicFolderInput)
     
-    datFileList = glob.glob(dicFolderInput + '*\*.dat') 
+    datFileList = glob.glob(path.join(dicFolderInput, '*.dat'))
     
     plotTitleX = baseName + ': Origin X-Values (mm)'
     plotTitleY = baseName + ': Origin Y-Values (mm)'
@@ -188,6 +210,10 @@ def originHistograms(dicFolderInput, histogramFolder, originNPYfolder):
                             dicFolderInput,
                             histogramFolder)
     
+# =============================================================================
+# =============================================================================
+# # Comment out this section if you want bypass the numpy saving section
+# =============================================================================
     ##=========================================================================
     ##    Save .npy files of origin X & Y values here
     ##=========================================================================
@@ -217,6 +243,8 @@ def originHistograms(dicFolderInput, histogramFolder, originNPYfolder):
     np.save(intersectFile, np.array([intersect_X_bucket,intersect_Y_bucket]))
     np.save(rawMedianFile, np.array([rawMedian_X_bucket,rawMedian_Y_bucket]))
     np.save(polyMedianFile,np.array([polyMedian_X_bucket,polyMedian_Y_bucket]))
+# =============================================================================
+# =============================================================================
     
     return len(datFileList)
     
@@ -225,12 +253,13 @@ def originHistograms(dicFolderInput, histogramFolder, originNPYfolder):
 ##=============================================================================
 datFolderNameList = \
     [ \
-    'C:\\temp\Blue_PVC_Valmex_BubbleTest00',\
-    'C:\\temp\Blue_PVC_Valmex_BubbleTest01',\
-    'C:\\temp\Blue_PVC_Valmex_BubbleTest02',\
-    'C:\\temp\Blue_PVC_Valmex_BubbleTest03',\
-    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest01',\
-    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest02',\
+     'C:\\temp\\demo\\'
+#    'C:\\temp\Blue_PVC_Valmex_BubbleTest00',\
+#    'C:\\temp\Blue_PVC_Valmex_BubbleTest01',\
+#    'C:\\temp\Blue_PVC_Valmex_BubbleTest02',\
+#    'C:\\temp\Blue_PVC_Valmex_BubbleTest03',\
+#    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest01',\
+#    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest02',\
 #    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest03',\
 #    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest04' \
     ]
@@ -238,9 +267,11 @@ datFolderNameList = \
 counter = 0
 
 histogramFolder = 'C:\\temp\Histograms'
-os.makedirs(histogramFolder)
+if not path.isdir(histogramFolder):
+    os.makedirs(histogramFolder)
 originNPYfolder = 'C:\\temp\OriginNPYs'
-os.makedirs(originNPYfolder)
+if not path.isdir(originNPYfolder):
+    os.makedirs(originNPYfolder)
 
 plt.ioff()
 
