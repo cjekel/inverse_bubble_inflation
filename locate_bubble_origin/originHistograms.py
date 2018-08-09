@@ -253,15 +253,14 @@ def originHistograms(dicFolderInput, histogramFolder, originNPYfolder):
 ##=============================================================================
 datFolderNameList = \
     [ \
-     'C:\\temp\\demo\\'
-#    'C:\\temp\Blue_PVC_Valmex_BubbleTest00',\
-#    'C:\\temp\Blue_PVC_Valmex_BubbleTest01',\
-#    'C:\\temp\Blue_PVC_Valmex_BubbleTest02',\
-#    'C:\\temp\Blue_PVC_Valmex_BubbleTest03',\
-#    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest01',\
-#    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest02',\
-#    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest03',\
-#    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest04' \
+    'C:\\temp\Blue_PVC_Valmex_BubbleTest00',\
+    'C:\\temp\Blue_PVC_Valmex_BubbleTest01',\
+    'C:\\temp\Blue_PVC_Valmex_BubbleTest02',\
+    'C:\\temp\Blue_PVC_Valmex_BubbleTest03',\
+    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest01',\
+    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest02',\
+    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest03',\
+    'C:\\temp\Black_PVC_Cape_Coaters_BubbleTest04' \
     ]
 
 counter = 0
