@@ -3,6 +3,7 @@
 # MIT License
 #
 # Copyright (c) 2018 Andrés Bernardo
+# Copyright (c) 2019 Charles Jekel
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
