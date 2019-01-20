@@ -279,6 +279,23 @@ def check_given_arguments():
         
     return [dataFolder, removeZeroZ, outputPlot, surfaceGrid]
 
+def circleFit(X, Y):  
+    # assemble the A matrix
+    A = np.zeros((len(X),3))
+    A[:,0] = X*2
+    A[:,1] = Y*2
+    A[:,2] = 1
+
+    # assemble the f matrix
+    f = np.zeros((len(X),1))
+    f[:,0] = (X*X) + (Y*Y)
+    C, residules, rank, singval = np.linalg.lstsq(A,f)
+
+    # solve for r
+    r = math.sqrt((C[0]*C[0])+(C[1]*C[1])+C[2])
+    
+    return C[0], C[1], r
+
 ###############################################################################
 
 # run the "check_given_arguments()" function to check the given arguments;
@@ -297,7 +314,7 @@ datFileList = glob.glob( path.join(dataFolder, '*.dat') )
 
 # print out the total # of ".dat" files found in the given folder
 print('\nFound', len(datFileList), '".dat" files in folder', dataFolder)
-
+count = 0
 ###############################################################################        
 # if there are 1 or more ".dat" files, continue; otherwise, stop operation
 if len(datFileList) > 0:
@@ -372,7 +389,14 @@ if len(datFileList) > 0:
             # otherwise, continue without affecting data
             if removeZeroZ:
                 datNumpyArray = datNumpyArray[ (datNumpyArray[:,2] != 0) \
-                                              | (datNumpyArray[:,5] != 0)]
+                                              | (datNumpyArray[:,5] != 0)]1
+                if count = 0:
+                    # if this is the first file, find the center
+                    xc, yc, r = circleFit(datNumpyArray[:, 0], datNumpyArray[:, 1])
+                    count += 1
+                # adjust the x and y data based on the center
+                datNumpyArray[:, 0] = datNumpyArray[:, 0] - xc
+                datNumpyArray[:, 1] = datNumpyArray[:, 1] - yc
                 # the 6th column contains Z-displacement data,
                 # the 3rd column contains initial Z data;
                 # datNumpyArray = datNumpyArray[ (datNumpyArray[:,2] != 0) \

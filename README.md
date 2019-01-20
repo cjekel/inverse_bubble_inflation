@@ -10,7 +10,7 @@ WIP: Identify material parameters from DIC bubble inflation tests...
 - [ ] Determine the location where the pressure stops increasing
 - [ ] Create folders of the appropriate pressure data and corresponding npz of the displacement data
 - [ ] Rotate option for certain tests
-- [ ] Add circle adjust method
+- [x] Add circle adjust method
 - [ ] Remove data points on bounds (if r > 95 mm, then remove)
 
 # TODO FE Models

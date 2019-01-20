@@ -32,7 +32,7 @@ import math
 #    well as the radius of the circle
 #    Usage: xCenter, yCenter, r = circleFit(X,Y)
 
-def circleFit(X,Y):
+def circleFit(X, Y):
     # convert the input vectors to numpy arrays
     X = np.array(X)
     Y = np.array(Y)
@@ -51,4 +51,4 @@ def circleFit(X,Y):
     # solve for r
     r = math.sqrt((C[0]*C[0])+(C[1]*C[1])+C[2])
     
-    return C[0], C[1], r;
+    return C[0], C[1], r
