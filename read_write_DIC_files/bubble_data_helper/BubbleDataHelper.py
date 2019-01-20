@@ -191,6 +191,7 @@ from mpl_toolkits.mplot3d import Axes3D
 def is_folderPathStr_valid(folderPath):
     try:
         folderPath = folderPath.strip() # (remove unnecessary spaces)
+        print(folderPath)
         
         if not path.isdir(folderPath):
             print('Sorry, that is not a valid folder directory. ')
@@ -292,7 +293,7 @@ def circleFit(X, Y):
     C, residules, rank, singval = np.linalg.lstsq(A,f)
 
     # solve for r
-    r = math.sqrt((C[0]*C[0])+(C[1]*C[1])+C[2])
+    r = np.sqrt((C[0]*C[0])+(C[1]*C[1])+C[2])
     
     return C[0], C[1], r
 
@@ -326,7 +327,7 @@ if len(datFileList) > 0:
     dir_path = path.dirname(path.realpath(__file__))
 
     # create a path for a new folder in which the compressed data will be saved
-    npzFolder = path.join(dir_path, 'CompressedNumpyData_' + \
+    npzFolder = path.join(dataFolder, 'CompressedNumpyData_' + \
                           path.basename(dataFolder) )
     
 #==============================================================================
@@ -389,8 +390,8 @@ if len(datFileList) > 0:
             # otherwise, continue without affecting data
             if removeZeroZ:
                 datNumpyArray = datNumpyArray[ (datNumpyArray[:,2] != 0) \
-                                              | (datNumpyArray[:,5] != 0)]1
-                if count = 0:
+                                              | (datNumpyArray[:,5] != 0)]
+                if count == 0:
                     # if this is the first file, find the center
                     xc, yc, r = circleFit(datNumpyArray[:, 0], datNumpyArray[:, 1])
                     count += 1
