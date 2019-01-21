@@ -6,12 +6,12 @@ WIP: Identify material parameters from DIC bubble inflation tests...
 - [x] Create command line function that converts and stores DIC tec data into compressed arrays
 - [x] Identify the specimen from test data 
 - [x] Determine origin location for all tests (compare different methods for finding the origin)
-- [ ] Open pressure data and find the the location where the pressure starts increasing
-- [ ] Determine the location where the pressure stops increasing
-- [ ] Create folders of the appropriate pressure data and corresponding npz of the displacement data
-- [ ] Rotate option for certain tests
+- [x] Open pressure data and find the the location where the pressure starts increasing
+- [x] Determine the location where the pressure stops increasing
+- [x] Create folders of the appropriate pressure data and corresponding npz of the displacement data
+- [x] Rotate option for certain tests
 - [x] Add circle adjust method
-- [ ] Remove data points on bounds (if r > 95 mm, then remove)
+- [x] Remove data points on bounds (if r > 95 mm, then remove)
 
 # TODO FE Models
 - [x] Identify appropriate abaqus material models (Appropriate models include hyperelastic fung orthotropic)
